@@ -1,14 +1,26 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Bebas_Neue } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const MariupolBold = localFont({
+  src: "../public/fonts/Mariupol-Bold.ttf",
+  weight: "700",
+  style: "normal",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const bebas = localFont({
+  src: "../public/fonts/bebas.ttf",
+  weight: "700",
+  style: "normal",
+  display: "swap",
+});
+
+const bahnschrift = localFont({
+  src: "../public/fonts/BAHNSCHRIFT.ttf",
+  weight: "800",
+  style: "normal",
+  display: "swap",
 });
 
 export const metadata = {
@@ -19,7 +31,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        className={`${bahnschrift.className} ${MariupolBold.className} ${bebas.className}`}
+      >
         {children}
       </body>
     </html>
