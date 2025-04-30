@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import Sofa from "@/components/Sofa/Sofa";
+import BlurAnimation from "@/components/BlurAnimation/BlurAnimation";
 export default function Home() {
   return (
     <>
@@ -32,8 +33,10 @@ export default function Home() {
         }}
       >
         <div className="title">LABEL</div>
-        <div className="title2">LABEL</div>
-        <span className="subtitle">studio</span>
+        <div className="title2">
+          LABEL<span className="subtitle">studio</span>
+        </div>
+
         <div className="subtitle2">
           Архітектурний дизайн
           <br /> преміум-класу
@@ -44,6 +47,7 @@ export default function Home() {
         </div>
         <Sofa />
       </div>
+      <BlurAnimation />
 
       <section className="hero card">
         <h1 className="inset_text" data-text="Створюємо простори майбутнього">
