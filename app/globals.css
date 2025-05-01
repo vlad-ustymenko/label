@@ -12,9 +12,8 @@
 
 html,
 body {
-  max-width: 100vw;
   overflow-x: hidden;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
@@ -40,7 +39,7 @@ a {
 
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -247,56 +246,19 @@ body {
   cursor: pointer;
 }
 
-.nav-links li {
-  padding: 0.75rem 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  border-radius: 30px;
-  background: #1e1e1e;
-  box-shadow: 4px 4px 6px #0f0f0f, -1px -1px 2px #2d2d2d;
-  color: #ffffff;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-right: 20px;
-  position: relative;
-}
-
-.nav-links li::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 30px;
-  background: transparent;
-  box-shadow: inset 4px 4px 6px #0f0f0f, inset -1px -1px 2px #2d2d2d;
-  color: #ffffff;
-  font-size: 1rem;
-  cursor: pointer;
-  z-index: 2;
-  transition: all 0.3s ease;
-  opacity: 0;
-}
-
-.nav-links li:hover::after {
-  opacity: 1;
-}
-
 .title {
   position: absolute;
   top: 10%;
   left: 2%;
   font-family: "bebas", sans-serif;
   font-size: 17rem;
-  animation: spin 2s ease-in-out 1s;
+  /* animation: spin 2s ease-in-out 1s forwards; */
+  letter-spacing: 0px;
   z-index: -1;
 }
 
 .title2 {
-  position: relative;
+  position: absolute;
   width: fit-content;
   top: 10%;
   left: 2%;
@@ -304,7 +266,8 @@ body {
   font-family: "bebas", sans-serif;
   -webkit-text-stroke: 1px white;
   color: transparent;
-  animation: spin 2s ease-in-out 1s;
+  /* animation: spin 2s ease-in-out 1s forwards; */
+  letter-spacing: 0px;
   z-index: 2;
 }
 
@@ -312,11 +275,12 @@ body {
   position: absolute;
   bottom: -12%;
   right: 0;
-  font-size: 6rem;
+  font-size: 8rem;
   z-index: 2;
   color: #1c7bff;
   -webkit-text-stroke: 1px #1c7bff;
-  animation: spin 2s ease-in-out 1s;
+  letter-spacing: 0px;
+  /* animation: spin 2s ease-in-out 1s forwards; */
 }
 
 .subtitle2 {
@@ -327,21 +291,13 @@ body {
   font-size: 1rem;
   z-index: 2;
 }
-.subtitle3 {
-  position: absolute;
-  bottom: 10%;
-  right: 5%;
-  text-align: center;
-  font-size: 1rem;
-  z-index: 2;
-}
 
 @keyframes spin {
   from {
-    letter-spacing: 1rem;
+    letter-spacing: 10px;
   }
   to {
-    letter-spacing: 0rem;
+    letter-spacing: 0px;
   }
 }
 
@@ -361,4 +317,45 @@ body {
   transition: filter 0.3s ease;
   filter: blur(10px);
   padding: 20px;
+}
+
+@media (min-width: 1920px) {
+  .title {
+    font-size: 30rem;
+  }
+
+  .title2 {
+    font-size: 30rem;
+  }
+
+  .subtitle {
+    font-size: 15rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10rem;
+  }
+
+  .title2 {
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10rem;
+  }
+
+  .subtitle {
+    position: absolute;
+    bottom: -12%;
+    right: 50%;
+    transform: translateX(50%);
+    font-size: 5rem;
+  }
+  .subtitle2 {
+    display: none;
+  }
 }
