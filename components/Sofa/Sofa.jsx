@@ -1,52 +1,78 @@
 "use client";
 
 import { useEffect } from "react";
+import gsap from "gsap";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment, useGLTF } from "@react-three/drei";
 import { useThree, useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import styles from "./Sofa.module.css";
 
 function Model() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const gltf = useGLTF("/models/room2.glb");
   const ref = useRef();
   gltf.scene.traverse((child) => {
     if (child.isMesh) {
-      child.material.color.set("#444444"); // сіро-середній
-      child.material.roughness = 0.9; // необов'язково, для мати
+      child.material.color.set("#444444");
+      // child.material.roughness = 0.9;
     }
-    // Обертання з затуханням
-    // let elapsed = 0;
-    // useFrame((_, delta) => {
-    //   if (elapsed < 1) {
-    //     elapsed += delta;
-    // ref.current.rotation.x = Math.min(0.01, elapsed * 0.01);
-    // ref.current.rotation.y = Math.min(0.6, elapsed * 0.6);
-    // ref.current.rotation.z = Math.min(0.6, elapsed * 0.6);
-    //   }
-    // });
   });
-  return <primitive ref={ref} object={gltf.scene} position={[70, 20, 0]} />;
+  return (
+    <primitive
+      ref={ref}
+      object={gltf.scene}
+      position={[isMobile ? 0 : 70, isMobile ? -30 : 20, isMobile ? -100 : 0]}
+    />
+  );
 }
+
+gsap.registerPlugin(ScrollTrigger);
 
 function CameraAnimation() {
   const { camera } = useThree();
-  const startPos = useRef([50, 100, 300]);
-  const endPos = useRef([150, 100, 300]);
-  const speed = 0.05;
+  const animationDone = useRef(false);
 
-  // Встановлюємо початкову позицію один раз
-  useRef(() => {
-    camera.position.set(...startPos.current);
-  }, []);
+  const startPos = { x: 50, y: 100, z: 300 };
+  const endPos = { x: 150, y: 100, z: 300 };
 
-  useFrame(() => {
-    // Плавний перехід до endPos
-    camera.position.x += (endPos.current[0] - camera.position.x) * speed;
-    camera.position.y += (endPos.current[1] - camera.position.y) * speed;
-    camera.position.z += (endPos.current[2] - camera.position.z) * speed;
+  useEffect(() => {
+    // Встановити початкову позицію
+    camera.position.set(startPos.x, startPos.y, startPos.z);
 
-    camera.updateProjectionMatrix();
-  });
+    // Початкова анімація
+    gsap.to(camera.position, {
+      x: endPos.x,
+      y: endPos.y,
+      z: endPos.z,
+      duration: 2,
+      ease: "power2.out",
+    });
+
+    gsap.to(camera.position, {
+      z: 400,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".main",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+      },
+    });
+  }, [camera]);
 
   return null;
 }
@@ -62,6 +88,7 @@ export default function Sofa() {
         left: "0",
         zIndex: "1",
       }}
+      className="ok"
     >
       <Canvas camera={{ position: [50, 100, 300], fov: 50 }}>
         <CameraAnimation />
