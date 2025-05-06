@@ -1,29 +1,58 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import SplitTextJS from "split-text-js";
 import { gsap } from "gsap";
-import { useEffect, useRef } from "react";
 import styles from "./SpinningText.module.css";
 
 const SpinningText = ({ textArray, className }) => {
   const spinningRef = useRef(null);
-  useEffect(() => {
-    const titles = spinningRef.current.querySelectorAll("p");
+  const splitInstances = useRef([]);
+  const tl = useRef();
 
-    console.log(titles);
-    const tl = gsap.timeline({ repeat: -1 });
+  useEffect(() => {
+    const container = spinningRef.current;
+    if (!container) return;
+
+    gsap.set(container, { opacity: 1 });
+
+    const titles = container.querySelectorAll("p");
+
+    tl.current = gsap.timeline({ repeat: -1 });
+
     titles.forEach((title) => {
-      const splitTitle = new SplitTextJS(title);
-      tl.from(
-        splitTitle.chars,
-        { opacity: 0, y: 20, rotateX: -90, stagger: 0.1 },
-        "<0.1"
-      ).to(
-        splitTitle.chars,
-        { opacity: 0, y: -20, rotateX: 90, stagger: 0.1 },
-        "+=1"
-      );
+      const split = new SplitTextJS(title);
+      splitInstances.current.push(split);
+
+      tl.current
+        .from(
+          split.chars,
+          {
+            opacity: 0,
+            y: 20,
+            rotateX: -90,
+            stagger: 0.1,
+            duration: 0.6,
+          },
+          "<0.1"
+        )
+        .to(
+          split.chars,
+          {
+            opacity: 0,
+            y: -20,
+            rotateX: 90,
+            stagger: 0.1,
+            duration: 0.6,
+          },
+          "+=1"
+        );
     });
+
+    return () => {
+      tl.current?.kill();
+      splitInstances.current.forEach((split) => split.revert());
+    };
   }, []);
+
   return (
     <div className={className} ref={spinningRef}>
       {textArray.map((text, index) => (
