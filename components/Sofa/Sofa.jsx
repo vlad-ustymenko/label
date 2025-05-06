@@ -9,25 +9,12 @@ import { useRef, useState } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./Sofa.module.css";
 
-function Model() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const gltf = useGLTF("/models/room2.glb");
+function Model({ isMobile }) {
+  const gltf = useGLTF("/models/new.glb");
   const ref = useRef();
   gltf.scene.traverse((child) => {
     if (child.isMesh) {
-      child.material.color.set("#444444");
+      child.material.color.set("#333333");
       // child.material.roughness = 0.9;
     }
   });
@@ -35,19 +22,18 @@ function Model() {
     <primitive
       ref={ref}
       object={gltf.scene}
-      position={[isMobile ? 0 : 70, isMobile ? -30 : 20, isMobile ? -100 : 0]}
+      position={[isMobile ? -1 : 0, isMobile ? -1 : 0, isMobile ? -3 : 0]}
     />
   );
 }
 
 gsap.registerPlugin(ScrollTrigger);
 
-function CameraAnimation() {
+function CameraAnimation({ isMobile }) {
   const { camera } = useThree();
-  const animationDone = useRef(false);
 
-  const startPos = { x: 50, y: 100, z: 300 };
-  const endPos = { x: 150, y: 100, z: 300 };
+  const startPos = { x: 0, y: 1, z: 1.3 };
+  const endPos = { x: 0.5, y: 1, z: 1.3 };
 
   useEffect(() => {
     // Встановити початкову позицію
@@ -63,10 +49,10 @@ function CameraAnimation() {
     });
 
     gsap.to(camera.position, {
-      z: 400,
+      z: isMobile ? 4 : 4,
       ease: "none",
       scrollTrigger: {
-        trigger: ".main",
+        trigger: "body",
         start: "top top",
         end: "bottom bottom",
         scrub: true,
@@ -78,6 +64,18 @@ function CameraAnimation() {
 }
 
 export default function Sofa() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <div
       style={{
@@ -90,13 +88,13 @@ export default function Sofa() {
       }}
       className="ok"
     >
-      <Canvas camera={{ position: [50, 100, 300], fov: 50 }}>
-        <CameraAnimation />
+      <Canvas camera={{ position: [0.5, 1, 1.3], fov: 50 }}>
+        <CameraAnimation isMobile={isMobile} />
         <ambientLight intensity={0.3} />
-        <directionalLight position={[100, 10, 50]} intensity={1} />
+        <directionalLight position={[1, 2, 3]} intensity={0.2} />
         <OrbitControls enableZoom={false} enableRotate={false} />
         <Environment preset="city" />
-        <Model />
+        <Model isMobile={isMobile} />
       </Canvas>
     </div>
   );
