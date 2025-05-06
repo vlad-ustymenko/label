@@ -1,0 +1,17 @@
+.wrapper {
+  width: 80%;
+  margin: 150px 0 0 20px;
+}
+.text {
+  font-family: "bahnschriftRegular", sans-serif;
+  font-size: 4rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 60px;
+  font-weight: 200;
+}
+
+.content {
+  display: block;
+}
