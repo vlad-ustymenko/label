@@ -16,9 +16,22 @@ const bebas = localFont({
   display: "swap",
 });
 
+const bebasRegular = localFont({
+  src: "../public/fonts/bebas.ttf",
+  weight: "200",
+  style: "normal",
+  display: "swap",
+});
+
 const bahnschrift = localFont({
   src: "../public/fonts/BAHNSCHRIFT.ttf",
   weight: "800",
+  style: "normal",
+  display: "swap",
+});
+const bahnschriftRegular = localFont({
+  src: "../public/fonts/BAHNSCHRIFT.ttf",
+  weight: "400",
   style: "normal",
   display: "swap",
 });
@@ -32,7 +45,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${bahnschrift.className} ${MariupolBold.className} ${bebas.className}`}
+        className={`${bebasRegular.className} ${bahnschrift.className} ${bahnschriftRegular.className} ${bebas.className}`}
       >
         {children}
       </body>
