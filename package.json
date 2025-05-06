@@ -15,7 +15,6 @@
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "smooth-scrollbar": "^8.8.4",
     "split-text-js": "^1.0.3",
     "three": "^0.176.0"
   },
