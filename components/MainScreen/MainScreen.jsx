@@ -5,17 +5,8 @@ import Sofa from "@/components/Sofa/Sofa";
 import Button from "@/components/Button/Button";
 import SpinningText from "../SpinningText/SpinningText";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Scrollbar from "smooth-scrollbar";
-gsap.registerPlugin(ScrollTrigger);
 
 const MainScreen = () => {
-  // useEffect(() => {
-  //   Scrollbar.init(document.body, {
-  //     damping: 0.1,
-  //     renderByPixels: true,
-  //   });
-  // }, []);
   const spinningText = [
     "Авторський нагляд",
     "3D візуалізація",
