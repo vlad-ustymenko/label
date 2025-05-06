@@ -10,12 +10,12 @@ import Scrollbar from "smooth-scrollbar";
 gsap.registerPlugin(ScrollTrigger);
 
 const MainScreen = () => {
-  useEffect(() => {
-    Scrollbar.init(document.body, {
-      damping: 0.1,
-      renderByPixels: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   Scrollbar.init(document.body, {
+  //     damping: 0.1,
+  //     renderByPixels: true,
+  //   });
+  // }, []);
   const spinningText = [
     "Авторський нагляд",
     "3D візуалізація",
@@ -25,9 +25,30 @@ const MainScreen = () => {
   ];
 
   useEffect(() => {
-    gsap.to("title", {
-      letterSpacing: "20px",
+    gsap.to(".title", {
+      letterSpacing: "0px",
       ease: "power2.out",
+      delay: 1,
+      duration: 2,
+    });
+    gsap.to(".title2", {
+      letterSpacing: "0px",
+      ease: "power2.out",
+      delay: 1,
+      duration: 2,
+    });
+    gsap.to(".subtitle", {
+      letterSpacing: "0px",
+      ease: "power2.out",
+      delay: 1,
+      duration: 2,
+    });
+
+    gsap.to(".subtitle", {
+      letterSpacing: "0px",
+      ease: "power2.out",
+      delay: 1,
+      duration: 2,
     });
 
     const tl = gsap.timeline({
