@@ -313,6 +313,16 @@ body::-webkit-scrollbar {
   padding: 20px;
 }
 
+.baner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  z-index: 100;
+  background-color: blue;
+}
+
 @media (min-width: 1920px) {
   .title {
     font-size: 30rem;
