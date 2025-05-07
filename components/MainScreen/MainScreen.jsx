@@ -54,10 +54,6 @@ const MainScreen = () => {
     tl.to(".title", { y: 200, letterSpacing: "10px" })
       .to(".title2", { y: 200, letterSpacing: "10px" }, "<")
       .to(".subtitle", { letterSpacing: "10px" }, "<");
-
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
   }, []);
 
   return (

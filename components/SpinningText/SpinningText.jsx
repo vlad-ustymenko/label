@@ -49,7 +49,6 @@ const SpinningText = ({ textArray, className }) => {
 
     return () => {
       tl.current?.kill();
-      splitInstances.current.forEach((split) => split.revert());
     };
   }, []);
 
