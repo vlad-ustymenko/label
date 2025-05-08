@@ -4,6 +4,7 @@ import styles from "./MainScreen.module.css";
 import Sofa from "@/components/Sofa/Sofa";
 import Button from "@/components/Button/Button";
 import SpinningText from "../SpinningText/SpinningText";
+
 import { gsap } from "gsap";
 
 const MainScreen = () => {

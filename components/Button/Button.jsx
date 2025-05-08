@@ -1,17 +1,23 @@
 import React from "react";
-import { animatePageOut } from "@/utils/animation";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePageTransition } from "../../hooks/usePageTransition";
 import styles from "./Button.module.css";
 
 const Button = ({ title, className }) => {
-  const router = useRouter();
-  const onclick = () => {
-    animatePageOut("/projects", router);
-  };
+  const animateTransition = usePageTransition();
+
   return (
-    <button className={`${className} ${styles.button}`} onClick={onclick}>
+    <Link
+      href={"/projects"}
+      className={`${className} ${styles.button}`}
+      onClick={(e) => {
+        e.preventDefault();
+        window.history.replaceState({ customState: true }, "", "/projects");
+        animateTransition("/projects");
+      }}
+    >
       {title}
-    </button>
+    </Link>
   );
 };
 

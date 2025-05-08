@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono, Bebas_Neue } from "next/font/google";
+import { ViewTransitions } from "next-view-transitions";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -43,12 +44,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${bebasRegular.className} ${bahnschrift.className} ${bahnschriftRegular.className} ${bebas.className}`}
-      >
-        {children}
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="en">
+        <body
+          className={`${bebasRegular.className} ${bahnschrift.className} ${bahnschriftRegular.className} ${bebas.className}`}
+        >
+          {children}
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }
