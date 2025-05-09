@@ -6,45 +6,80 @@ import { usePageTransition } from "../../hooks/usePageTransition";
 import { projects } from "@/DTO/projects";
 import gsap from "gsap";
 import st from "./projects.module.css";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const Page = () => {
   const animateTransition = usePageTransition();
   const cardsRef = useRef([]);
 
   useEffect(() => {
-    setTimeout(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const mm = gsap.matchMedia();
+
+    const setupAnimation = (isMobile, isTablet) => {
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
 
-        const screenWidth = window.innerWidth;
-        const col = index % 3;
+        let fromVars = { opacity: 0, x: 0, rotateZ: 0, scale: 1 };
 
-        let animationFrom = {};
-
-        if (col === 0) {
-          animationFrom = { x: -100, opacity: 0 };
-        } else if (col === 1) {
-          animationFrom = { scale: 0, opacity: 0 };
+        if (isMobile || isTablet) {
+          const isLeft = index % (isTablet ? 2 : 2) === 0;
+          fromVars.x = isLeft ? -100 : 100;
+          fromVars.rotateZ = isLeft ? -10 : 10;
         } else {
-          animationFrom = { x: 100, opacity: 0 };
+          const col = index % 3;
+          fromVars.x = col === 0 ? -100 : col === 2 ? 100 : 0;
+          fromVars.rotateZ = col === 0 ? -10 : col === 2 ? 10 : 0;
+          fromVars.scale = col === 1 ? 0.7 : 1;
         }
 
-        gsap.fromTo(card, animationFrom, {
-          x: 0,
-          scale: 1,
+        const toVars = {
           opacity: 1,
+          x: 0,
+          rotateZ: 0,
+          scale: 1,
           duration: 1,
-          autoAlpha: 1,
           ease: "power3.out",
-          delay: index * 0.1,
+        };
+
+        const animation = gsap.fromTo(card, fromVars, {
+          ...toVars,
+          paused: true,
+        });
+
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 90%",
+          end: "bottom 10%",
+          onEnter: () => animation.play(),
+          onLeave: () => animation.reverse(),
+          onEnterBack: () => animation.play(),
+          onLeaveBack: () => animation.reverse(),
         });
       });
-    }, 300);
+    };
+
+    // Register matchMedia for responsiveness
+    mm.add(
+      {
+        isMobile: "(max-width: 767px)",
+        isTablet: "(min-width: 768px) and (max-width: 1024px)",
+        isDesktop: "(min-width: 1025px)",
+      },
+      (context) => {
+        const { isMobile, isTablet } = context.conditions;
+        setupAnimation(isMobile, isTablet);
+      }
+    );
+
+    return () => mm.revert(); // Clean up animations
   }, []);
 
   return (
     <>
       <Link
+        className={st.button}
         href="/"
         onClick={(e) => {
           e.preventDefault();
@@ -52,32 +87,41 @@ const Page = () => {
           animateTransition("/");
         }}
       >
-        Назад
+        Label
       </Link>
-
-      <div>page</div>
 
       <div className={st.wrapper}>
         {projects.map((project, i) => (
           <div
             key={project.id + i}
-            className={st.card}
+            className={st.cardWrapper}
             ref={(el) => (cardsRef.current[i] = el)}
             style={{
-              position: "relative",
               width: "100%",
-              height: "200px",
-              overflow: "hidden",
+              height: "fit-content",
             }}
           >
-            <Image
-              fill
-              sizes="33vw"
-              src={project.url}
-              alt={project.title}
-              style={{ objectFit: "cover" }}
-              className={st.image}
-            />
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "200px",
+                overflow: "hidden",
+              }}
+            >
+              <Image
+                fill
+                sizes="33vw"
+                src={project.url}
+                alt={project.title}
+                style={{ objectFit: "cover" }}
+                className={st.image}
+              />
+            </div>
+            <div className={st.year}>{project.year}</div>
+            <div className={st.title}>{project.title}</div>
+            <div className={st.customer}>{project.customer}</div>
+            <div className={st.description}>{project.description}</div>
           </div>
         ))}
       </div>
