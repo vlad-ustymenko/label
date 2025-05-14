@@ -99,11 +99,11 @@ const Page = () => {
             href={`/projects/${project.id}`}
             onClick={(e) => {
               e.preventDefault();
-              // window.history.replaceState(
-              //   { customState: true },
-              //   "",
-              //   "/projects"
-              // );
+              window.history.replaceState(
+                { customState: true },
+                "",
+                "/projects"
+              );
               animateTransition(`/projects/${project.id}`);
             }}
             key={project.id + i}

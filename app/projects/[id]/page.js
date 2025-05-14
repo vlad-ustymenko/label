@@ -29,7 +29,11 @@ const Page = () => {
               href="/"
               onClick={(e) => {
                 e.preventDefault();
-                // window.history.replaceState({ customState: true }, "", "/projects");
+                window.history.replaceState(
+                  { customState: true },
+                  "",
+                  "/projects"
+                );
                 animateTransition("/");
               }}
             >
@@ -40,7 +44,11 @@ const Page = () => {
               href="/"
               onClick={(e) => {
                 e.preventDefault();
-                // window.history.replaceState({ customState: true }, "", "/projects");
+                window.history.replaceState(
+                  { customState: true },
+                  "",
+                  "/projects"
+                );
                 animateTransition("/projects");
               }}
             >
