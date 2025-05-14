@@ -13,9 +13,12 @@
 
 html,
 body {
+  /* scrollbar-width: none;
+  -ms-overflow-style: none; */
+}
+
+html {
   overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 
 body {
@@ -38,10 +41,10 @@ a {
   text-decoration: none;
 }
 
-html::-webkit-scrollbar,
+/* html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none;
-}
+} */
 
 @media (prefers-color-scheme: dark) {
   html {
@@ -258,7 +261,7 @@ body::-webkit-scrollbar {
   left: 2%;
   font-size: 17rem;
   font-family: "bebas", sans-serif;
-  -webkit-text-stroke: 1px white;
+  -webkit-text-stroke: 3px white;
   color: transparent;
   /* animation: spin 2s ease-in-out 1s forwards; */
   letter-spacing: 20px;
@@ -272,7 +275,7 @@ body::-webkit-scrollbar {
   font-size: 8rem;
   z-index: 2;
   color: var(--accent);
-  -webkit-text-stroke: 1px var(--accent);
+  -webkit-text-stroke: 3px var(--accent);
   letter-spacing: 20px;
   /* animation: spin 2s ease-in-out 1s forwards; */
 }
