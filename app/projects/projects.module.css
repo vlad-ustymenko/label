@@ -62,16 +62,34 @@
   padding-top: 0.7rem;
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
+
+
+@media (max-width: 767px) {
   .wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Планшет */
+@media (min-width: 768px) and (max-width: 1024px) {
+.wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
   }
 }
 
-@media (max-width: 768px) {
-  .wrapper {
-    grid-template-columns: 1fr;
+/* Малий десктоп */
+@media (min-width: 1025px) and (max-width: 1919px) {
+
+}
+
+/* Великий десктоп */
+@media (min-width: 1920px) {
+	.wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
   }
+ 
 }
