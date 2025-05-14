@@ -17,14 +17,16 @@ const Page = () => {
 
     const mm = gsap.matchMedia();
 
-    const setupAnimation = (isMobile, isTablet) => {
+    const setupAnimation = (isMobile, isTablet, isLargeDesktop) => {
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
 
         let fromVars = { opacity: 0, x: 0, rotateZ: 0, scale: 1 };
 
-        if (isMobile || isTablet) {
-          const isLeft = index % (isTablet ? 2 : 2) === 0;
+        if (isMobile || isTablet || isLargeDesktop) {
+          const columns = isLargeDesktop ? 4 : 2;
+          const col = index % columns;
+          const isLeft = col < columns / 2;
           fromVars.x = isLeft ? -100 : 100;
           fromVars.rotateZ = isLeft ? -10 : 10;
         } else {
@@ -65,11 +67,12 @@ const Page = () => {
       {
         isMobile: "(max-width: 767px)",
         isTablet: "(min-width: 768px) and (max-width: 1024px)",
-        isDesktop: "(min-width: 1025px)",
+        isDesktop: "(min-width: 1025px) and (max-width: 1919px)",
+        isLargeDesktop: "(min-width: 1920px)",
       },
       (context) => {
-        const { isMobile, isTablet } = context.conditions;
-        setupAnimation(isMobile, isTablet);
+        const { isMobile, isTablet, isLargeDesktop } = context.conditions;
+        setupAnimation(isMobile, isTablet, isLargeDesktop);
       }
     );
 
@@ -83,7 +86,7 @@ const Page = () => {
         href="/"
         onClick={(e) => {
           e.preventDefault();
-          window.history.replaceState({ customState: true }, "", "/projects");
+          // window.history.replaceState({ customState: true }, "", "/projects");
           animateTransition("/");
         }}
       >
@@ -92,7 +95,17 @@ const Page = () => {
 
       <div className={st.wrapper}>
         {projects.map((project, i) => (
-          <div
+          <Link
+            href={`/projects/${project.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              // window.history.replaceState(
+              //   { customState: true },
+              //   "",
+              //   "/projects"
+              // );
+              animateTransition(`/projects/${project.id}`);
+            }}
             key={project.id + i}
             className={st.cardWrapper}
             ref={(el) => (cardsRef.current[i] = el)}
@@ -107,6 +120,7 @@ const Page = () => {
                 width: "100%",
                 height: "200px",
                 overflow: "hidden",
+                willChange: "transform, opacity, scale, rotate",
               }}
             >
               <Image
@@ -122,7 +136,7 @@ const Page = () => {
             <div className={st.title}>{project.title}</div>
             <div className={st.customer}>{project.customer}</div>
             <div className={st.description}>{project.description}</div>
-          </div>
+          </Link>
         ))}
       </div>
     </>
