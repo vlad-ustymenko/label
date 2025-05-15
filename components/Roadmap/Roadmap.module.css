@@ -1,0 +1,19 @@
+.roadmapWrapper {
+  width: 100vw;
+  height: 500vh;
+  /* overflow: hidden; */
+  position: relative;
+}
+
+.roadmapHorizontal {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.roadmapSvg {
+  width: 100%;
+  height: 100vh;
+  display: block;
+}
