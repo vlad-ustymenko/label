@@ -77,8 +77,8 @@ const MainScreen = () => {
       </div>
 
       <div className="subtitle2">
-        Архітектурний дизайн
-        <br /> преміум-класу
+        Ми створюємо інтер’єри, які надихають.
+        <br /> Інтер’єри, в які хочеться повертатись.
       </div>
 
       <SpinningText textArray={spinningText} className={styles.spinningText} />
