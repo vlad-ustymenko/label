@@ -1,44 +1,71 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import styles from "./Roadmap.module.css";
+import Image from "next/image";
+import st from "./Roadmap.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const RoadmapHorizontal = () => {
+const Roadmap = () => {
   const pathRef = useRef(null);
+  const svgRef = useRef(null);
   const textRefs = useRef([]);
   const circleRefs = useRef([]);
+  const firstImageRef = useRef(null);
+  const secondImageRef = useRef(null);
 
-  const points = [10, 200, 400, 600]; // X-координати точок
+  const [isVertical, setIsVertical] = useState(false);
+
+  const labels = [
+    "Дзвінок",
+    "Зустріч i консультація",
+    "Заключення договору",
+    "Виїзд дизайнера на об'єкт",
+    "Розробка дизайн-проєкту",
+    "Реалізація та здача",
+    "Фініш",
+  ];
+
+  const progressPoints = [0.085, 0.25, 0.42, 0.58, 0.75, 0.92];
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsVertical(window.innerWidth < 1024);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const path = pathRef.current;
-    const totalLength = path.getTotalLength();
-    const labels = textRefs.current;
-    const circles = circleRefs.current;
+    const svg = svgRef.current;
+    const labelsEl = textRefs.current;
+    const circlesEl = circleRefs.current;
 
-    // Початковий стан лінії
+    const totalLength = path.getTotalLength();
+
     gsap.set(path, {
       strokeDasharray: totalLength,
       strokeDashoffset: totalLength,
     });
 
-    // Початковий стан кіл
-    circles.forEach((circle) => {
-      gsap.set(circle, { opacity: 0, scale: 0 });
+    circlesEl.forEach((circle) => {
+      gsap.set(circle, {
+        opacity: 0,
+        scale: 0,
+      });
     });
 
-    // Анімація лінії
     const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: ".non",
+        trigger: ".roadmap-trigger",
         start: "top center",
         end: "bottom bottom",
         scrub: true,
-        markers: true,
       },
     });
 
@@ -47,74 +74,160 @@ const RoadmapHorizontal = () => {
       ease: "none",
     });
 
-    // Анімація появи кіл та тексту по довжині лінії
     ScrollTrigger.create({
-      trigger: ".non",
+      trigger: ".roadmap-trigger", // батьківський контейнер
+      start: "top top",
+      end: "bottom bottom", // або конкретне значення як "bottom top"
+      pin: `.${st.roadmapHorizontal}`,
+      scrub: true,
+      anticipatePin: 1,
+    });
+
+    ScrollTrigger.create({
+      trigger: ".roadmap-trigger",
       start: "top center",
-      end: "bottom center",
+      end: "bottom bottom",
       scrub: true,
       onUpdate: (self) => {
         const progress = self.progress;
 
-        points.forEach((x, i) => {
-          const threshold = (i + 1) / (points.length + 1);
+        circlesEl.forEach((circle, i) => {
+          const threshold = progressPoints[i];
 
           if (progress >= threshold) {
-            gsap.to(circles[i], { opacity: 1, scale: 1, duration: 0.4 });
-            gsap.to(labels[i], { opacity: 1, y: 0, duration: 0.4 });
+            gsap.to(circle, { opacity: 1, duration: 0.4, scale: 1 });
+            gsap.to(labelsEl[i], { opacity: 1, y: 0, duration: 0.4 });
           } else {
-            gsap.to(circles[i], { opacity: 0, scale: 0, duration: 0.3 });
-            gsap.to(labels[i], { opacity: 0, y: 20, duration: 0.3 });
+            gsap.to(circle, { opacity: 0, duration: 0.3, scale: 0 });
+            gsap.to(labelsEl[i], { opacity: 0, y: 20, duration: 0.3 });
           }
         });
       },
     });
-  }, []);
+
+    const updatePositions = () => {
+      progressPoints.forEach((pointValue, i) => {
+        const pos = path.getPointAtLength(pointValue * totalLength);
+        const circle = circlesEl[i];
+        if (circle) {
+          circle.setAttribute("cx", Math.ceil(pos.x));
+          circle.setAttribute("cy", Math.ceil(pos.y));
+        }
+      });
+    };
+
+    gsap.to(firstImageRef.current, {
+      y: "150vh",
+      x: "30vw",
+      rotate: 20,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".first-image-trigger", // або окремий контейнер
+        start: "top 80%",
+        end: "bottom center",
+        scrub: true,
+      },
+    });
+    gsap.to(secondImageRef.current, {
+      y: "150vh",
+      x: "-30vw",
+      rotate: -20,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".second-image-trigger", // або окремий контейнер
+        start: "top 80%",
+        end: "bottom center",
+        scrub: true,
+      },
+    });
+
+    updatePositions();
+    ScrollTrigger.refresh();
+
+    window.addEventListener("resize", updatePositions);
+    return () => {
+      window.removeEventListener("resize", updatePositions);
+    };
+  }, [isVertical]);
 
   return (
-    <div className={`${styles.roadmapWrapper} non`}>
-      <div className={styles.roadmapHorizontal}>
+    <div className={`${st.roadmapWrapper} roadmap-trigger`}>
+      <div className={`${st.firstImageWrapper}  first-image-trigger`}>
+        <Image
+          src="/1.png"
+          alt="roadmap"
+          width={1000}
+          height={1000}
+          className={`${st.firstImage}`}
+          ref={firstImageRef}
+        />
+      </div>
+
+      <div className={`${st.secondImageWrapper}  second-image-trigger`}>
+        <Image
+          src="/3.png"
+          alt="roadmap"
+          width={1000}
+          height={1000}
+          className={`${st.secondImage}`}
+          ref={secondImageRef}
+        />
+      </div>
+
+      <div className={st.roadmapHorizontal}>
+        <h2 className={st.roadmapTitle}>Етапи взаємодії</h2>
+
         <svg
-          className={styles.roadmapSvg}
-          viewBox="0 0 1920 1080"
-          // preserveAspectRatio="none"
+          ref={svgRef}
+          className={st.roadmapSvg}
+          viewBox={isVertical ? "0 0 200 1000" : "0 0 1000 200"}
+          preserveAspectRatio="xMidYMid meet"
           xmlns="http://www.w3.org/2000/svg"
-          width={"100%"}
-          height={"100vh"}
         >
           <path
             ref={pathRef}
-            d="M0.00 180.03C260.12 153.41 408.31 219.40 332.23 374.59 169.11 485.15 92.50 646.15 131.01 942.14 158.54 1034.02 404.04 1070.90 463.36 937.13 520.45 771.34 615.09 576.49 802.32 549.94 999.58 541.06 1322.97 587.46 1331.47 740.34 1288.50 876.48 1920.00 998.58 1729.83 564.33 1886.46 208.57 2099.15 0.00 2080.83 588.62 2499.37 600.12"
+            d={
+              isVertical
+                ? "M 100 10 Q -150 90, 100 170 Q 380 250, 100 330 Q -150 410, 100 490 Q 380 570, 100 650 Q -150 730, 100 810 Q 380 890, 100 970"
+                : "M 10 100 Q 90 0, 170 100 Q 250 200, 330 100 Q 410 0, 490 100 Q 570 200, 650 100 Q 730 0, 810 100 Q 890 200, 970 100"
+            }
             stroke="white"
-            strokeWidth="4"
+            strokeWidth={isVertical ? "10" : "6"}
             fill="none"
           />
-
-          {points.map((x, i) => (
+          {progressPoints.map((_, i) => (
             <circle
               key={i}
               ref={(el) => (circleRefs.current[i] = el)}
-              cx={x}
-              cy={100}
-              r="6"
-              fill="white"
+              r="12"
+              fill="var(--accent)"
             />
           ))}
         </svg>
 
-        <div className={styles.labelsHorizontal}>
-          {["План", "Дизайн", "Розробка", "Запуск"].map((label, i) => (
+        <div className={st.labelsHorizontal}>
+          {labels.map((title, i) => (
             <div
               key={i}
               ref={(el) => (textRefs.current[i] = el)}
-              className={styles.labelHorizontal}
+              className={st.labelHorizontal}
               style={{
-                left: `${points[i]}px`,
+                position: "absolute",
+                top: isVertical
+                  ? `${11 + i * 14.5}%`
+                  : i % 2 === 0
+                  ? "30%"
+                  : "68%",
+                left: isVertical
+                  ? i % 2 === 0
+                    ? "20%"
+                    : "65%"
+                  : `${13 + i * 15}%`,
                 opacity: 0,
-                transform: "translateY(20px)",
+                transform: "translate(-50%, 0)",
               }}
             >
-              {label}
+              {title}
             </div>
           ))}
         </div>
@@ -123,4 +236,4 @@ const RoadmapHorizontal = () => {
   );
 };
 
-export default RoadmapHorizontal;
+export default Roadmap;
