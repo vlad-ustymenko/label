@@ -12,7 +12,8 @@ const Button = ({ title, className }) => {
       className={`${className} ${styles.button}`}
       onClick={(e) => {
         e.preventDefault();
-        window.history.replaceState({ customState: true }, "", "/projects");
+        document.body.classList.add("bodyHidden");
+        // window.history.replaceState({ customState: true }, "", "/projects");
         animateTransition("/projects");
       }}
     >

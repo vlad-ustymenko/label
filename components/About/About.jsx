@@ -69,8 +69,8 @@ const About = () => {
       <Image
         src="/2.png"
         alt="background"
-        width={2000}
-        height={2000}
+        width={1000}
+        height={1000}
         className={styles.background}
         ref={imageRef}
       />

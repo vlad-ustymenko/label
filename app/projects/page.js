@@ -88,6 +88,9 @@ const Page = () => {
           e.preventDefault();
           // window.history.replaceState({ customState: true }, "", "/projects");
           animateTransition("/");
+          setTimeout(() => {
+            document.body.classList.remove("bodyHidden");
+          }, 500);
         }}
       >
         Label
