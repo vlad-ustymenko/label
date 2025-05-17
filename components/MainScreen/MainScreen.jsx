@@ -46,14 +46,15 @@ const MainScreen = () => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: `.${styles.mainScreen}`,
+        scroller: "[data-scroll-container]",
         start: "top top",
         end: "bottom top",
         scrub: true,
       },
     });
 
-    tl.to(".title", { y: 200, letterSpacing: "10px" })
-      .to(".title2", { y: 200, letterSpacing: "10px" }, "<")
+    tl.to(".title", { letterSpacing: "10px" })
+      .to(".title2", { letterSpacing: "10px" }, "<")
       .to(".subtitle", { letterSpacing: "10px" }, "<");
   }, []);
 
@@ -71,9 +72,12 @@ const MainScreen = () => {
       ></div>
       <Button title="Портфоліо" className={styles.button} />
 
-      <h1 className="title">LABEL</h1>
-      <div className="title2">
-        LABEL<h2 className="subtitle">studio</h2>
+      <h1 className="title" data-scroll data-scroll-speed="-2">
+        LABEL
+      </h1>
+      <div className="title2" data-scroll data-scroll-speed="-2">
+        LABEL
+        <h2 className="subtitle">studio</h2>
       </div>
 
       <div className="subtitle2">
