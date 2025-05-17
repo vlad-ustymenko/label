@@ -63,6 +63,7 @@ const Roadmap = () => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: ".roadmap-trigger",
+        scroller: "[data-scroll-container]",
         start: "top center",
         end: "bottom bottom",
         scrub: true,
@@ -76,6 +77,7 @@ const Roadmap = () => {
 
     ScrollTrigger.create({
       trigger: ".roadmap-trigger", // батьківський контейнер
+      scroller: "[data-scroll-container]",
       start: "top top",
       end: "bottom bottom", // або конкретне значення як "bottom top"
       pin: `.${st.roadmapHorizontal}`,
@@ -85,6 +87,7 @@ const Roadmap = () => {
 
     ScrollTrigger.create({
       trigger: ".roadmap-trigger",
+      scroller: "[data-scroll-container]",
       start: "top center",
       end: "bottom bottom",
       scrub: true,
@@ -117,24 +120,24 @@ const Roadmap = () => {
     };
 
     gsap.to(firstImageRef.current, {
-      y: "150vh",
       x: "30vw",
       rotate: 20,
       ease: "none",
       scrollTrigger: {
         trigger: ".first-image-trigger", // або окремий контейнер
+        scroller: "[data-scroll-container]",
         start: "top 80%",
         end: "bottom center",
         scrub: true,
       },
     });
     gsap.to(secondImageRef.current, {
-      y: "150vh",
       x: "-30vw",
       rotate: -20,
       ease: "none",
       scrollTrigger: {
         trigger: ".second-image-trigger", // або окремий контейнер
+        scroller: "[data-scroll-container]",
         start: "top 80%",
         end: "bottom center",
         scrub: true,
@@ -152,7 +155,11 @@ const Roadmap = () => {
 
   return (
     <div className={`${st.roadmapWrapper} roadmap-trigger`}>
-      <div className={`${st.firstImageWrapper}  first-image-trigger`}>
+      <div
+        className={`${st.firstImageWrapper}  first-image-trigger`}
+        data-scroll
+        data-scroll-speed="-2"
+      >
         <Image
           src="/1.png"
           alt="roadmap"

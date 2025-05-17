@@ -18,13 +18,14 @@ const About = () => {
     const image = imageRef.current;
     if (!container || !image) return;
 
-    // SplitTextJS (твоя анімація тексту)
+    // Анімація тексту
     const spans = container.querySelectorAll("span");
     spans.forEach((span) => {
       const split = new SplitTextJS(span);
       gsap.from(split.chars, {
         scrollTrigger: {
-          trigger: container,
+          trigger: span,
+          scroller: "[data-scroll-container]",
           start: "top 80%",
           toggleActions: "restart none none reverse",
         },
@@ -37,14 +38,14 @@ const About = () => {
       });
     });
 
-    // Анімація картинки
+    // Початкові стилі для картинки
     gsap.set(image, {
       x: "0%",
       y: "0%",
       rotate: -10,
     });
 
-    // Scroll-залежна анімація
+    // Анімація картинки на скролл
     gsap.to(image, {
       x: "5%",
       y: "5%",
@@ -52,20 +53,26 @@ const About = () => {
       ease: "none",
       scrollTrigger: {
         trigger: ".about",
-        start: "top bottom",
+        scroller: "[data-scroll-container]", // <--- обов’язково вказати scroller
+        start: "top 80%",
         end: "bottom top",
-        ease: "power8.out",
-        scrub: 1,
+        scrub: true,
       },
     });
 
+    // Очищення ScrollTrigger при анмаунті
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
   return (
-    <div style={{ height: "100vh", position: "relative" }} className="about">
+    <div
+      style={{ height: "100vh", position: "relative" }}
+      className="about"
+      data-scroll
+      data-scroll-speed="2"
+    >
       <Image
         src="/2.png"
         alt="background"

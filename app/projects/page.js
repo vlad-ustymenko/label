@@ -52,6 +52,7 @@ const Page = () => {
 
         ScrollTrigger.create({
           trigger: card,
+          scroller: "[data-scroll-container]",
           start: "top 90%",
           end: "bottom 10%",
           onEnter: () => animation.play(),
