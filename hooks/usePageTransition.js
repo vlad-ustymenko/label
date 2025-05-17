@@ -24,7 +24,7 @@ export const usePageTransition = () => {
         document.documentElement.animate(
           [{ transform: "translateY(100%)" }, { transform: "translateY(0)" }],
           {
-            duration: 800,
+            duration: 700,
             easing: "cubic-bezier(0.76, 0, 0.24, 1)",
             fill: "forwards",
             pseudoElement: "::view-transition-new(root)",
