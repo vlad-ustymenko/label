@@ -1,7 +1,9 @@
 import { Geist, Geist_Mono, Bebas_Neue } from "next/font/google";
+import "locomotive-scroll/dist/locomotive-scroll.css";
 import { ViewTransitions } from "next-view-transitions";
 import localFont from "next/font/local";
 import "./globals.css";
+import ScrollWrapper from "@/components/ScrollerWrapper/ScrollerWrapper";
 
 const MariupolBold = localFont({
   src: "../public/fonts/Mariupol-Bold.ttf",
@@ -49,7 +51,7 @@ export default function RootLayout({ children }) {
         <body
           className={`${bebasRegular.className} ${bahnschrift.className} ${bahnschriftRegular.className} ${bebas.className}`}
         >
-          {children}
+          <ScrollWrapper>{children}</ScrollWrapper>
         </body>
       </html>
     </ViewTransitions>
