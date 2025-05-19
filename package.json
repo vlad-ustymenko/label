@@ -17,7 +17,7 @@
     "next-view-transitions": "^0.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "split-text-js": "^1.0.3",
+    "split-type": "^0.3.4",
     "three": "^0.176.0"
   },
   "devDependencies": {
